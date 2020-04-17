@@ -1,25 +1,30 @@
 import socket
 import threading
 
-
+# TODO: Every server should ask clienct for their name
 class Client:
+    SERVER = socket.gethostbyname(socket.gethostname())
+    ENCODING = 'utf-8'
     socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    PORT = 10000
 
     def __init__(self):
         print("[CLIENT] Starting...")
-        self.socket.connect(('192.168.1.8', 10000))
+        self.socket.connect((self.SERVER, self.PORT))
         iThread = threading.Thread(target=self.sendMsg)
         iThread.daemon = True
         iThread.start()
         while True:
-            data = self.socket.recv(1024)
+            data = self.socket.recv(64)
             if not data:
                 break
-            print(data)
+            print(data.decode(self.ENCODING))
 
     def sendMsg(self):
         while True:
-            self.socket.send(bytes(input(""), 'utf-8'))
+            message = input("")
+            self.socket.send(bytes(message, self.ENCODING))
 
 
 client = Client()
