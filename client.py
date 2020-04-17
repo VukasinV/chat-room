@@ -2,6 +2,8 @@ import socket
 import threading
 
 # TODO: Every server should ask clienct for their name
+
+
 class Client:
     SERVER = socket.gethostbyname(socket.gethostname())
     ENCODING = 'utf-8'
@@ -15,11 +17,13 @@ class Client:
         iThread = threading.Thread(target=self.sendMsg)
         iThread.daemon = True
         iThread.start()
-        while True:
-            data = self.socket.recv(64)
-            if not data:
-                break
-            print(data.decode(self.ENCODING))
+        try:
+            while True:
+                data = self.socket.recv(64)
+                print(data.decode(self.ENCODING))
+        except ConnectionResetError:
+            print("Chat room was closed")
+            exit()
 
     def sendMsg(self):
         while True:

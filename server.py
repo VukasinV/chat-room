@@ -18,7 +18,7 @@ class Server:
     def run(self):
         while True:
             conn, addr = self.socket.accept()
-            conn.send(bytes('***** Welcome to chat-room *****', self.ENCODING))
+            conn.send(bytes('***** Welcome to chat-room *****\n', self.ENCODING))
             conn.send(bytes('What is your name?', self.ENCODING))
             client_name = conn.recv(64).decode(self.ENCODING)
             while True:
